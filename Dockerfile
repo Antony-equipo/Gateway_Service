@@ -8,15 +8,13 @@ WORKDIR /app
 # Copy the requirements file into the container
 COPY requirements.txt .
 
+RUN apt update && apt-get install default-libmysqlclient-dev gcc -y
 # Install the required packages
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application code into the container
 COPY . .
 
-# Run migrations
-RUN python manage.py makemigrations
-RUN python manage.py migrate
 
 # Start the application
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
